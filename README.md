@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Task List
+Meu primeiro projeto usando outras bibliotecas, onde é uma aplicação web que permite aos usuários adicionar, visualizar e remover tarefas de uma lista. O objetivo principal é fornecer uma interface simples e intuitiva para o gerenciamento de tarefas diárias.
+
+
+## 🛠 Habilidades
+React, TypeSript, Tailwind, Lucide React, Styled-Components
+  
+## 📷 Screenshots    
+![image](https://github.com/user-attachments/assets/ea31f0b4-cca3-434a-a517-9c9d88e71f51)
+
+
 
 ## Getting Started
 
