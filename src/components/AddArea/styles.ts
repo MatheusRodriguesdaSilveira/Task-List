@@ -9,7 +9,8 @@ export const Container = styled.div`
     align-items: center;
 
     .image {
-        margin-right: 5px;
+        margin-right: 10px;
+        cursor: pointer;
     }
 
     input {
@@ -19,5 +20,9 @@ export const Container = styled.div`
         color: #FFF;
         font-size: 18px;
         flex: 1;
+    }
+
+    input::placeholder {
+        color: #CCC;
     }
 `;
