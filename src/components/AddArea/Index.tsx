@@ -26,7 +26,7 @@ export const AddArea = ({ onEnter }: Props) => {
     return (
         <C.Container>
             <div className='image'> 
-                <PlusCircle onClick={handleButtonClick} style={{ cursor: 'pointer' }} /> 
+                <PlusCircle className='text-lime-500' onClick={handleButtonClick} style={{ cursor: 'pointer' }} /> 
             </div>
             <input 
                 type="text" 
