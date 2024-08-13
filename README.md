@@ -3,7 +3,20 @@ Meu primeiro projeto usando outras bibliotecas, onde é uma aplicação web que 
 
 
 ## 🛠 Habilidades
-React, TypeSript, Tailwind, Lucide React, Styled-Components
+###
+
+<div align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" height="40" alt="nextjs logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" height="40" alt="react logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" height="40" alt="typescript logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg" height="40" alt="tailwindcss logo"  />
+  <img width="12" />
+</div>
+
+###
   
 ## 📷 Screenshots    
 ![image](https://github.com/user-attachments/assets/ea31f0b4-cca3-434a-a517-9c9d88e71f51)
