@@ -13,10 +13,18 @@ export const Container = styled.div<ContainerProps>`
     margin-bottom: 10px;
     align-items: center;
 
-    input {
+    input[type="checkbox"]{
         display: none;
     }
-
+    
+    input[type="text"] {
+        border: 1px solid #CCC; 
+        background-color: #2C2C38; 
+        color: #FFF; [cor: #FFF;]
+        padding: 5px; [preenchimento: 5px;
+        border-radius: 5px; [raio da borda: 5px;
+        width: 100%; 
+}
     .text-lime-500 {
         color: limegreen;
         margin-right: 5px;
@@ -32,5 +40,6 @@ export const Container = styled.div<ContainerProps>`
     label {
         color: #CCC;
         text-decoration: ${(props) => props.done ? 'line-through' : 'initial'};
+        cursor: pointer;
     }
 `;
