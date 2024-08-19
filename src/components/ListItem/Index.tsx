@@ -1,7 +1,7 @@
 import { useState, KeyboardEvent } from "react";
 import * as C from "./styles";
 import { Item } from "@/types/item";
-import { CheckCircle, Circle, Edit, X } from "lucide-react";
+import { CheckCircle, Circle, Edit, GripVerticalIcon, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -9,14 +9,17 @@ type Props = {
   item: Item;
   onRemove: (id: number) => void;
   onEdit: (id: number, newName: string) => void;
+  provided: any; // passando o 'provided' do Draggable como prop
 };
 
-export const ListItem = ({ item, onRemove, onEdit }: Props) => {
+export const ListItem = ({ item, onRemove, onEdit, provided }: Props) => {
+  // States
   const { toast } = useToast();
   const [isChecked, setIsChecked] = useState(item.done);
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(item.name);
 
+  // Functions
   const handleRemoveClick = () => {
     onRemove(item.id);
   };
@@ -92,9 +95,15 @@ export const ListItem = ({ item, onRemove, onEdit }: Props) => {
   };
 
   return (
-    <C.Container done={isChecked}>
+    <C.Container
+      done={isChecked}
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
       <div className="rounded-xl flex items-center shadow-shape w-full">
         <div className="flex items-center gap-2 flex-1 h-8">
+          <GripVerticalIcon />
           <input
             type="checkbox"
             checked={isChecked}
@@ -120,7 +129,9 @@ export const ListItem = ({ item, onRemove, onEdit }: Props) => {
               className="border border-zinc-300 px-2 py-1"
             />
           ) : (
-            <label>{item.name}</label>
+            <div>
+              <label>{item.name} </label>
+            </div>
           )}
         </div>
 
