@@ -9,13 +9,19 @@ type Props = {
   item: Item;
   onRemove: (id: number) => void;
   onEdit: (id: number, newName: string) => void;
+  onToggle: (id: number) => void; // Adicionando a função de toggle como prop
   provided: any; // passando o 'provided' do Draggable como prop
 };
 
-export const ListItem = ({ item, onRemove, onEdit, provided }: Props) => {
+export const ListItem = ({
+  item,
+  onRemove,
+  onEdit,
+  onToggle,
+  provided,
+}: Props) => {
   // States
   const { toast } = useToast();
-  const [isChecked, setIsChecked] = useState(item.done);
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(item.name);
 
@@ -25,10 +31,9 @@ export const ListItem = ({ item, onRemove, onEdit, provided }: Props) => {
   };
 
   const handleCheckboxClick = () => {
-    const newCheckedStatus = !isChecked;
-    setIsChecked(newCheckedStatus);
+    onToggle(item.id); // Chama a função de toggle
 
-    if (newCheckedStatus) {
+    if (!item.done) {
       toast({
         title: "Task Complete!",
         description: (
@@ -47,13 +52,11 @@ export const ListItem = ({ item, onRemove, onEdit, provided }: Props) => {
           </ToastAction>
         ),
       });
-    } else {
-      setIsChecked(!isChecked);
     }
   };
 
   const handleEditClick = () => {
-    if (!isChecked) {
+    if (!item.done) {
       setIsEditing(true);
     } else {
       toast({
@@ -96,7 +99,7 @@ export const ListItem = ({ item, onRemove, onEdit, provided }: Props) => {
 
   return (
     <C.Container
-      done={isChecked}
+      done={item.done}
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
@@ -106,11 +109,11 @@ export const ListItem = ({ item, onRemove, onEdit, provided }: Props) => {
           <GripVerticalIcon />
           <input
             type="checkbox"
-            checked={isChecked}
-            onChange={(e) => setIsChecked(e.target.checked)}
+            checked={item.done}
+            onChange={handleCheckboxClick} // Chama a função de toggle
           />
           <div onClick={handleCheckboxClick} style={{ cursor: "pointer" }}>
-            {isChecked ? (
+            {item.done ? (
               <CheckCircle className="text-lime-500" />
             ) : (
               <Circle className="text-gray-500" />

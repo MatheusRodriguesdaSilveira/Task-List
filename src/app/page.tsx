@@ -1,7 +1,7 @@
 "use client";
 
 import * as C from "@/app/App.styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Item } from "@/types/item";
 import { CheckCircle } from "lucide-react";
 import { ListItem } from "@/components/ListItem/Index";
@@ -11,9 +11,30 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 const Page = () => {
   const [list, setList] = useState<Item[]>([]);
 
+  // Função para salvar tarefas no localStorage
+  const saveTasksToLocalStorage = (tasks: Item[]) => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
+  // Função para carregar tarefas do localStorage
+  const loadTasksFromLocalStorage = () => {
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+      return JSON.parse(savedTasks);
+    }
+    return [];
+  };
+
+  // Carregar tarefas do localStorage quando o componente for montado
+  useEffect(() => {
+    const savedTasks = loadTasksFromLocalStorage();
+    setList(savedTasks);
+  }, []);
+
   const handleRemoveTask = (id: number) => {
     const newList = list.filter((item) => item.id !== id);
     setList(newList);
+    saveTasksToLocalStorage(newList); // Salvar após remover
   };
 
   const handleEditTask = (id: number, newName: string) => {
@@ -24,6 +45,7 @@ const Page = () => {
       return item;
     });
     setList(newList);
+    saveTasksToLocalStorage(newList); // Salvar após editar
   };
 
   const handleAddTask = (taskName: string) => {
@@ -34,6 +56,18 @@ const Page = () => {
       done: false,
     });
     setList(NewList);
+    saveTasksToLocalStorage(NewList); // Salvar após adicionar
+  };
+
+  const handleToggleTask = (id: number) => {
+    const newList = list.map((item) => {
+      if (item.id === id) {
+        return { ...item, done: !item.done };
+      }
+      return item;
+    });
+    setList(newList);
+    saveTasksToLocalStorage(newList); // Salvar após marcar/desmarcar como concluída
   };
 
   const handleDragEnd = (result: any) => {
@@ -45,6 +79,7 @@ const Page = () => {
       result.destination.index
     );
     setList(reorderedItems);
+    saveTasksToLocalStorage(reorderedItems); // Salvar após rearranjar
   };
 
   const reorder = (list: Item[], startIndex: number, endIndex: number) => {
@@ -78,6 +113,7 @@ const Page = () => {
                         item={item}
                         onRemove={handleRemoveTask}
                         onEdit={handleEditTask}
+                        onToggle={handleToggleTask} // Chamar ao marcar como concluída
                         provided={provided}
                       />
                     )}
