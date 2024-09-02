@@ -120,8 +120,11 @@ export const ListItem = ({
               value={newName}
               onChange={handleNameChanged}
               onBlur={handleBlur}
-              onKeyPress={(e) => {
-                if (e.code === "Enter" && newName.trim() !== "") {
+              onKeyDown={(e) => {
+                if (
+                  (e.code === "Enter" || e.key === "Enter") &&
+                  newName.trim() !== ""
+                ) {
                   onEdit(item.id, newName);
                   setIsEditing(false);
                 }
