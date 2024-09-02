@@ -85,13 +85,6 @@ export const ListItem = ({
     setNewName(e.target.value);
   };
 
-  const handleKeyUp = (e: KeyboardEvent) => {
-    if (e.code === "Enter" && newName.trim() !== "") {
-      onEdit(item.id, newName);
-      setIsEditing(false);
-    }
-  };
-
   const handleBlur = () => {
     setIsEditing(false);
     onEdit(item.id, newName);
@@ -127,7 +120,12 @@ export const ListItem = ({
               value={newName}
               onChange={handleNameChanged}
               onBlur={handleBlur}
-              onKeyUp={handleKeyUp}
+              onKeyUp={(e) => {
+                if (e.code === "Enter" && newName.trim() !== "") {
+                  onEdit(item.id, newName);
+                  setIsEditing(false);
+                }
+              }}
               autoFocus
               className="border border-zinc-300 px-2 py-1"
             />
