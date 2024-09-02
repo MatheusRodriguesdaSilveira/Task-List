@@ -9,7 +9,7 @@ type Props = {
 export const AddArea = ({ onEnter }: Props) => {
   const [inputText, setInputText] = useState("");
 
-  const handleKeyUp = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.code === "Enter" && inputText.trim() !== "") {
       onEnter(inputText);
       setInputText("");
@@ -37,7 +37,7 @@ export const AddArea = ({ onEnter }: Props) => {
         placeholder="Add a new task"
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
-        onKeyUp={handleKeyUp}
+        onKeyDown={handleKeyDown}
       />
     </C.Container>
   );
