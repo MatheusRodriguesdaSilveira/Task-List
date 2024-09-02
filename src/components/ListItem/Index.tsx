@@ -120,7 +120,7 @@ export const ListItem = ({
               value={newName}
               onChange={handleNameChanged}
               onBlur={handleBlur}
-              onKeyUp={(e) => {
+              onKeyPress={(e) => {
                 if (e.code === "Enter" && newName.trim() !== "") {
                   onEdit(item.id, newName);
                   setIsEditing(false);
