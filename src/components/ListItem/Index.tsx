@@ -1,7 +1,14 @@
-import { useState, KeyboardEvent } from "react";
+import { useState, useEffect } from "react";
 import * as C from "./styles";
 import { Item } from "@/types/item";
-import { CheckCircle, Circle, Edit, GripVerticalIcon, X } from "lucide-react";
+import {
+  BellRing,
+  CheckCircle,
+  Circle,
+  Edit,
+  GripVerticalIcon,
+  X,
+} from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -25,6 +32,13 @@ export const ListItem = ({
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(item.name);
 
+  // Request permission for notifications when the component is mounted
+  useEffect(() => {
+    if (Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, []);
+
   // Functions
   const handleRemoveClick = () => {
     onRemove(item.id);
@@ -35,12 +49,12 @@ export const ListItem = ({
 
     if (!item.done) {
       toast({
-        title: "Task Complete!",
+        title: "Tarefa concluída!",
         description: (
           <span>
-            You have successfully completed the task:.{" "}
+            Você concluiu uma tarefa:{" "}
             <span className="underline decoration-sky-500 font-extrabold">
-              Great job!
+              Muito Bem!
             </span>
           </span>
         ),
@@ -48,7 +62,7 @@ export const ListItem = ({
         duration: 2500,
         action: (
           <ToastAction altText="Undo" className="hover:text-black">
-            Undo
+            Fechar
           </ToastAction>
         ),
       });
@@ -60,21 +74,21 @@ export const ListItem = ({
       setIsEditing(true);
     } else {
       toast({
-        title: "Cannot Edit",
+        title: "Erro!",
         description: (
           <span>
-            You{" "}
+            Você{" "}
             <span className="underline decoration-red-800 font-extrabold">
-              cannot
+              não
             </span>{" "}
-            edit a completed task.
+            pode editar uma tarefa concluída!{" "}
           </span>
         ),
         className: "bg-gray-900/30 max-sm:bg-slate-950 text-white ",
         duration: 4000,
         action: (
           <ToastAction altText="Undo" className="hover:text-black">
-            Undo
+            Fechar
           </ToastAction>
         ),
       });
@@ -88,6 +102,37 @@ export const ListItem = ({
   const handleBlur = () => {
     setIsEditing(false);
     onEdit(item.id, newName);
+  };
+
+  // Function to schedule a notification
+  const scheduleNotification = (taskName: string, delay: number) => {
+    if (Notification.permission === "granted") {
+      setTimeout(() => {
+        new Notification("Lembrete de Tarefa", {
+          body: `Não se esqueça de completar: ${taskName}`,
+          icon: "/favicon.ico",
+        });
+      }, delay);
+    } else {
+      toast({
+        title: "Permissão negada!",
+        description: "Ative as notificações para usar os lembretes.",
+        className: "bg-red-500 text-white",
+        duration: 3000,
+      });
+    }
+  };
+
+  const handleSetReminder = () => {
+    const oneHour = 3600000; // Tempo para o lembrete (1 hora em milissegundos)
+    scheduleNotification(item.name, oneHour);
+
+    toast({
+      title: "Lembrete Definido!",
+      description: `Você será lembrado da tarefa "${item.name}" em 1 hora.`,
+      className: "bg-gray-900/30 max-sm:bg-slate-950 text-white ",
+      duration: 3000,
+    });
   };
 
   return (
@@ -133,28 +178,34 @@ export const ListItem = ({
               className="border border-zinc-300 px-2 py-1"
             />
           ) : (
-            <div>
-              <label>{item.name} </label>
+            <div className="w-full">
+              <label className="text-sm">{item.name}</label>
             </div>
           )}
         </div>
 
-        <div className="mr-5">
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={handleSetReminder}
+            className="px-1 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            <BellRing className="size-5" />
+          </button>
+
           <button
             type="button"
             onClick={handleEditClick}
             style={{ cursor: "pointer" }}
-            className="ml-auto px-1.5"
           >
-            <Edit className="size-6 text-zinc-400" />
+            <Edit className="size-5 text-zinc-400" />
           </button>
           <button
             type="button"
             onClick={handleRemoveClick}
             style={{ cursor: "pointer" }}
-            className="ml-auto px-1.5"
           >
-            <X className="size-6 text-zinc-400" />
+            <X className="size-5 text-zinc-400" />
           </button>
         </div>
       </div>
